@@ -51,16 +51,28 @@ namespace libWiiSharp
         private byte[] footer = new byte[0];
         private bool isDisposed;
 
+        /// <summary>
+        /// The region of the WAD.
+        /// </summary>
         public Region Region
         {
             get => tmd.Region;
             set => tmd.Region = value;
         }
 
+        /// <summary>
+        /// The number of content entries.
+        /// </summary>
         public int NumOfContents => tmd.NumOfContents;
 
+        /// <summary>
+        /// The contents of the WAD.
+        /// </summary>
         public byte[][] Contents => contents.ToArray();
 
+        /// <summary>
+        /// Determines whether to fakesign the ticket and TMD.
+        /// </summary>
         public bool FakeSign
         {
             get => tik.FakeSign && tmd.FakeSign;
@@ -71,18 +83,27 @@ namespace libWiiSharp
             }
         }
 
+        /// <summary>
+        /// The 00000000.app file where the banner is stored. Will be empty if HasBanner is false.
+        /// </summary>
         public U8 BannerApp
         {
             get => bannerApp;
             set => bannerApp = value;
         }
 
+        /// <summary>
+        /// The IOS the title is launched with.
+        /// </summary>
         public ulong StartupIOS
         {
             get => tmd.StartupIOS;
             set => tmd.StartupIOS = value;
         }
 
+        /// <summary>
+        /// The full title ID.
+        /// </summary>
         public ulong TitleID
         {
             get => tik.TitleID;
@@ -93,6 +114,9 @@ namespace libWiiSharp
             }
         }
 
+        /// <summary>
+        /// The upper title ID as a string.
+        /// </summary>
         public string UpperTitleID => tik.GetUpperTitleID();
 
         public ushort TitleVersion
@@ -101,16 +125,28 @@ namespace libWiiSharp
             set => tmd.TitleVersion = value;
         }
 
+        /// <summary>
+        /// The boot index. Represents the index of the NAND loader within the contents.
+        /// </summary>
         public ushort BootIndex
         {
             get => tmd.BootIndex;
             set => tmd.BootIndex = value;
         }
 
+        /// <summary>
+        /// The creation date and time of the WAD. Will be 1/1/1970 if no timestamp is found.
+        /// </summary>
         public DateTime CreationTimeUTC => creationTimeUTC;
 
+        /// <summary>
+        /// Whether the WAD includes a banner.
+        /// </summary>
         public bool HasBanner => hasBanner;
 
+        /// <summary>
+        /// Determines whether to LZ77 compress the banner and icon whilst saving the WAD.
+        /// </summary>
         public bool Lz77CompressBannerAndIcon
         {
             get => lz77CompressBannerAndIcon;
@@ -126,6 +162,9 @@ namespace libWiiSharp
             }
         }
 
+        /// <summary>
+        /// Determines whether to LZ77 decompress the banner and icon whilst saving the WAD.
+        /// </summary>
         public bool Lz77DecompressBannerAndIcon
         {
             get => lz77DecompressBannerAndIcon;
@@ -141,28 +180,48 @@ namespace libWiiSharp
             }
         }
 
+        /// <summary>
+        /// Estimation of the number of NAND memory blocks needed to store the WAD internally.
+        /// Might be inaccurate due to LZ77 (de)compression during saving.
+        /// </summary>
         public string NandBlocks => tmd.GetNandBlocks();
 
+        /// <summary>
+        /// All the channel titles as a string array (will be empty if HasBanner is false).
+        /// </summary>
         public string[] ChannelTitles
         {
             get => hasBanner ? ((Headers.IMET)bannerApp.Header).AllTitles : new string[0];
             set => ChangeChannelTitles(value);
         }
 
+        /// <summary>
+        /// Determines whether to keep the original footer or the one you provided.
+        /// If false, a timestamp will be added as a footer (64 bytes).
+        /// </summary>
         public bool KeepOriginalFooter
         {
             get => keepOriginalFooter;
             set => keepOriginalFooter = value;
         }
 
+        /// <summary>
+        /// The TMD's content entries.
+        /// </summary>
         public TMD_Content[] TmdContents => tmd.Contents;
 
+        /// <summary>
+        /// The common key used by the ticket. This is needed to encrypt/decrypt the titles content.
+        /// </summary>
         public CommonKeyType CommonKeyType
         {
             get => tik.CommonKeyIndex;
             set => tik.CommonKeyIndex = value;
         }
 
+        /// <summary>
+        /// Determines whether to sort the contents by index order.
+        /// </summary>
         public bool SortContents
         {
             get => tmd.SortContents;
@@ -602,6 +661,17 @@ namespace libWiiSharp
             throw new Exception(string.Format("Content with content ID {0} not found!", contentID));
         }
 
+        /// <summary>
+        /// Changes the channel titles (will not work if HasBanner is false).
+        /// 0: Japanese,
+        /// 1: English,
+        /// 2: German,
+        /// 3: French,
+        /// 4: Spanish,
+        /// 5: Italian,
+        /// 6: Dutch,
+        /// 7: Korean
+        /// </summary>
         public void ChangeChannelTitles(params string[] newTitles)
         {
             if (!hasBanner)
