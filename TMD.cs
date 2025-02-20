@@ -26,11 +26,11 @@ namespace libWiiSharp
 
     public enum Region : ushort
     {
-        Japan,
-        USA,
-        Europe,
-        Free,
-        Korea,
+        Japan = 0,
+        USA = 1,
+        Europe = 2,
+        Free = 3,
+        Korea = 4,
     }
 
     public enum ContentType : ushort
