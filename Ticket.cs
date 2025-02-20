@@ -488,8 +488,8 @@ namespace libWiiSharp
         private void PrivDecryptTitleKey()
         {
             byte[] numArray = CommonKey.GetStandardKey();
-            if (commonKeyIndex == 1) numArray = CommonKey.GetKoreanKey();
-            if (commonKeyIndex == 2) numArray = CommonKey.GetvWiiKey();
+            if (commonKeyIndex == 0x01) numArray = CommonKey.GetKoreanKey();
+            if (commonKeyIndex == 0x02) numArray = CommonKey.GetvWiiKey();
             
             byte[] bytes = BitConverter.GetBytes(Shared.Swap(titleId));
             Array.Resize<byte>(ref bytes, 16);
@@ -518,8 +518,8 @@ namespace libWiiSharp
         {
             commonKeyIndex = newKeyIndex;
             byte[] numArray = CommonKey.GetStandardKey();
-            if (commonKeyIndex == 1) numArray = CommonKey.GetKoreanKey();
-            if (commonKeyIndex == 2) numArray = CommonKey.GetvWiiKey();
+            if (commonKeyIndex == 0x01) numArray = CommonKey.GetKoreanKey();
+            if (commonKeyIndex == 0x02) numArray = CommonKey.GetvWiiKey();
             
             byte[] bytes = BitConverter.GetBytes(Shared.Swap(titleId));
             Array.Resize<byte>(ref bytes, 16);
