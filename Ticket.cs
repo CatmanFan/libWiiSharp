@@ -27,6 +27,7 @@ namespace libWiiSharp
     {
         Standard = 0x00,
         Korean = 0x01,
+        vWii = 0x02,
     }
 
     public class Ticket : IDisposable
@@ -486,7 +487,10 @@ namespace libWiiSharp
 
         private void PrivDecryptTitleKey()
         {
-            byte[] numArray = commonKeyIndex == 1 ? CommonKey.GetKoreanKey() : CommonKey.GetStandardKey();
+            byte[] numArray = CommonKey.GetStandardKey();
+            if (commonKeyIndex == 1) numArray = CommonKey.GetKoreanKey();
+            if (commonKeyIndex == 2) numArray = CommonKey.GetvWiiKey();
+            
             byte[] bytes = BitConverter.GetBytes(Shared.Swap(titleId));
             Array.Resize<byte>(ref bytes, 16);
 #pragma warning disable SYSLIB0022 // Type or member is obsolete
@@ -513,7 +517,10 @@ namespace libWiiSharp
         private void PrivEncryptTitleKey()
         {
             commonKeyIndex = newKeyIndex;
-            byte[] numArray = commonKeyIndex == 1 ? CommonKey.GetKoreanKey() : CommonKey.GetStandardKey();
+            byte[] numArray = CommonKey.GetStandardKey();
+            if (commonKeyIndex == 1) numArray = CommonKey.GetKoreanKey();
+            if (commonKeyIndex == 2) numArray = CommonKey.GetvWiiKey();
+            
             byte[] bytes = BitConverter.GetBytes(Shared.Swap(titleId));
             Array.Resize<byte>(ref bytes, 16);
 #pragma warning disable SYSLIB0022 // Type or member is obsolete
