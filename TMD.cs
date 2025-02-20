@@ -30,6 +30,7 @@ namespace libWiiSharp
         USA,
         Europe,
         Free,
+        Korea,
     }
 
     public enum ContentType : ushort
